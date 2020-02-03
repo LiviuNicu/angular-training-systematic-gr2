@@ -1,0 +1,31 @@
+<app-private-menu></app-private-menu>
+<div class="container">
+  <select
+    class="form-control"
+    #searchFilter
+    [(ngModel)]="selectedPlayer"
+    (ngModelChange)="changeRoute(searchFilter)"
+  >
+    <option value="all">See all</option>
+    <option *ngFor="let player of players | async" [value]="player.name">
+      {{ player.name }}
+    </option>
+  </select>
+  <table class="table">
+    <tr>
+      <td>Added by</td>
+      <td>Player 1</td>
+      <td>Player 2</td>
+      <td>Date added</td>
+    </tr>
+    <tr *ngFor="let data of history">
+      <td>{{ data.addedBy.name }}</td>
+      <td *ngFor="let player of data.players">
+        {{ player.name }} : <b>{{ player.score }}</b>
+      </td>
+      <td>
+        {{ data.dateAdded | date: "short" }}
+      </td>
+    </tr>
+  </table>
+</div>

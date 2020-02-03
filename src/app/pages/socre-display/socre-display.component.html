@@ -1,0 +1,69 @@
+<app-private-menu></app-private-menu>
+<div class="container">
+  <ng-template *ngIf="players.length < 2; then showForm; else showScore">
+  </ng-template>
+
+  <ng-template #showForm>
+    <div class="row">
+      <div class="col-9">
+        <input
+          class="form-control"
+          (keydown.enter)="newPlayer.name ? addPlayer(newPlayer) : null"
+          [(ngModel)]="newPlayer.name"
+          placeholder="Name ..."
+        />
+      </div>
+      <div class="col-3">
+        <button
+          class="btn btn-block"
+          (click)="newPlayer.isServing = !newPlayer.isServing"
+          [ngClass]="newPlayer.isServing ? 'btn-success' : 'btn-danger'"
+        >
+          {{ newPlayer.isServing ? "Serving first" : "Not serving first" }}
+        </button>
+      </div>
+    </div>
+    <hr />
+    <button
+      class="btn btn-success"
+      (click)="addPlayer(newPlayer)"
+      [disabled]="!newPlayer.name"
+    >
+      ADD PLAYER
+    </button>
+    <hr />
+    <table class="table">
+      <tr>
+        <td>Name</td>
+        <td>Score</td>
+        <td>Serving?</td>
+      </tr>
+      <tr *ngFor="let player of players">
+        <td>{{ player.name }}</td>
+        <td>{{ player.score }}</td>
+        <td>{{ player.isServing }}</td>
+      </tr>
+    </table>
+  </ng-template>
+  <ng-template #showScore>
+    <div class="row">
+      <div class="col-6" *ngFor="let player of players">
+        <app-player-details
+          [details]="player"
+          [winner]="winner"
+          (actionScoreChanged)="updatePlayer()"
+        ></app-player-details>
+      </div>
+
+      <div class="alert alert-success" *ngIf="winner && winner.name">
+        {{ winner.name }} won!
+        <button class="btn btn-success" (click)="newPlayers()">
+          New Players
+        </button>
+        <button class="btn btn-success" (click)="resetScore()">
+          Reset Score
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>

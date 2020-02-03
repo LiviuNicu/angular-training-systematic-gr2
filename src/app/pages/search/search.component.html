@@ -1,0 +1,21 @@
+<app-private-menu></app-private-menu>
+<label>name</label>
+<input
+  class="form-control"
+  [(ngModel)]="name"
+  (ngModelChange)="onFieldChanged()"
+/>
+<button class="btn btn-success" (click)="setServingState(true)">
+  Is Serving
+</button>
+<button class="btn btn-success" (click)="setServingState(false)">
+  Not Serving
+</button>
+<table class="table" *ngIf="players.length">
+  <tr *ngFor="let player of players | isServingFilter: isServingState">
+    <td appHilightIsServing [isServing]="player.isServing">
+      {{ player.name }}
+    </td>
+    <td>{{ player.isServing }}</td>
+  </tr>
+</table>
